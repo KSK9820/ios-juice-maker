@@ -12,8 +12,32 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         let juiceMaker = JuiceMaker()
-        juiceMaker.makeJuice(.strawberryBananaJuice)
-        juiceMaker.makeJuice(.strawberryBananaJuice)
+        do {
+            try juiceMaker.makeJuice(.bananaJuice)
+            try juiceMaker.makeJuice(.bananaJuice)
+            try juiceMaker.makeJuice(.bananaJuice)
+            try juiceMaker.makeJuice(.bananaJuice)
+            try juiceMaker.makeJuice(.bananaJuice)
+            try juiceMaker.makeJuice(.bananaJuice)
+        } catch {
+            print(error)
+        }
+        
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
+        juiceMaker.amountManage(.strawberry, false)
     }
 }
 

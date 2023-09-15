@@ -7,15 +7,10 @@
 
 import Foundation
 
-struct FruitStock {
-    var currentStock: Int = 10
-    var singleConsumption: Int
-    var combineConsumption: Int?
-    let name: String
-    
-    init(name: String, singleConsumption: Int, combineConsumption: Int? = nil) {
-        self.name = name
-        self.singleConsumption = singleConsumption
-        self.combineConsumption = combineConsumption
-    }
+enum Fruits {
+    case strawberry
+    case banana
+    case pineapple
+    case mango
+    case kiwi
 }

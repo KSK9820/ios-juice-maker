@@ -1,66 +1,41 @@
 //
 //  JuiceMaker - JuiceMaker.swift
-//  Created by yagom. 
+//  Created by yagom.
 //  Copyright © yagom academy. All rights reserved.
-// 
+//
 
 import Foundation
 
 // 쥬스 메이커 타입
 struct JuiceMaker {
     private var fruitStorage = FruitStore()
-    
-    func makeJuice(_ order: Juice) {
-        do {
-            let getOrder = try soldOutChecker(order)
-            fruitStorage.changeCurrentStock(getOrder)
-        } catch {
-            print(error)
+
+    //1. 주문을 받는다.
+    func makeJuice(_ juice: Juice) throws {
+        let recipe = juice.needsFruitForJuice
+        let isPossible = try juiceSoldOutChecker(recipe)
+
+        if isPossible == false {
+            throw ErrorPrinter.stockInsufficient
+        } else {
+            fruitStorage.stockCalculator(recipe)
         }
     }
     
-    private func juiceSoldOutChecker(_ fruit: FruitStock, _ juice: Juice) throws -> Juice {
-        guard fruit.currentStock >= fruit.singleConsumption else {
-            throw ErrorPrinter.stockInsufficient(fruit.name)
+    //2. 현재 재고량을 비교한다. 하나라도 부족하면 false로 넘기고 makeJuice에서 재고부족 알림
+    private func juiceSoldOutChecker(_ needFruit: [Fruits:Int]) throws -> Bool {
+        for (fruit, needs) in needFruit {
+            let currentStock = try fruitStorage.giveFruitQuantity(fruit)
+            if currentStock < needs {
+                return false
+            }
         }
-        return juice
+        
+        return true
     }
     
-    private func combineJuiceSoldOutChecker(_ firstFruit: FruitStock, _ secondFruit: FruitStock, _ juice: Juice) throws -> Juice {
-        guard let firstConsumption = firstFruit.combineConsumption else {
-            throw ErrorPrinter.invalidInput
-        }
-        guard let secondConsumption = secondFruit.combineConsumption else {
-            throw ErrorPrinter.invalidInput
-        }
-        guard firstFruit.currentStock >= firstConsumption || secondFruit.currentStock >= secondConsumption else {
-            throw ErrorPrinter.stockInsufficients([firstFruit.name, secondFruit.name])
-        }
-        guard firstFruit.currentStock >= firstConsumption else {
-            throw ErrorPrinter.stockInsufficient(firstFruit.name)
-        }
-        guard secondFruit.currentStock >= secondConsumption else {
-            throw ErrorPrinter.stockInsufficient(secondFruit.name)
-        }
-        return juice
-    }
-    
-    private func soldOutChecker(_ menu: Juice) throws -> Juice {
-        switch menu {
-        case .strawberryJuice:
-            return try juiceSoldOutChecker(fruitStorage.showStockList(.strawberryJuice)[0], .strawberryJuice)
-        case .bananaJuice:
-            return try juiceSoldOutChecker(fruitStorage.showStockList(.bananaJuice)[0], .bananaJuice)
-        case .kiwiJuice:
-            return try juiceSoldOutChecker(fruitStorage.showStockList(.kiwiJuice)[0], .kiwiJuice)
-        case .pineappleJuice:
-            return try juiceSoldOutChecker(fruitStorage.showStockList(.pineappleJuice)[0], .pineappleJuice)
-        case .mangoJuice:
-            return try juiceSoldOutChecker(fruitStorage.showStockList(.mangoJuice)[0], .mangoJuice)
-        case .strawberryBananaJuice:
-            return try combineJuiceSoldOutChecker(fruitStorage.showStockList(.strawberryBananaJuice)[0], fruitStorage.showStockList(.strawberryBananaJuice)[1], .strawberryBananaJuice)
-        case .mangoKiwiJuice:
-            return try combineJuiceSoldOutChecker(fruitStorage.showStockList(.mangoKiwiJuice)[0], fruitStorage.showStockList(.mangoKiwiJuice)[1], .mangoKiwiJuice)
-        }
+    //4. 재고 추가 || 삭제
+    func amountManage(_ fruitName: Fruits, _ isAdd: Bool) {
+        fruitStorage.stockManager(fruitName, isAdd)
     }
 }

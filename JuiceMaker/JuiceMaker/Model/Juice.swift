@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Juice: CustomStringConvertible {
+enum Juice {
     case strawberryJuice
     case bananaJuice
     case kiwiJuice
@@ -16,22 +16,22 @@ enum Juice: CustomStringConvertible {
     case strawberryBananaJuice
     case mangoKiwiJuice
     
-    var description: String {
+    var needsFruitForJuice: [Fruits:Int] {
         switch self {
         case .strawberryJuice:
-            return "주문성공😀 주문하신 딸기쥬스 나왔습니다."
+            return [.strawberry:16]
         case .bananaJuice:
-            return "주문성공😀 주문하신 바나나쥬스 나왔습니다."
+            return [.banana:2]
         case .kiwiJuice:
-            return "주문성공😀 주문하신 키위쥬스 나왔습니다."
+            return [.kiwi:3]
         case .pineappleJuice:
-            return "주문성공😀 주문하신 파인애플쥬스 나왔습니다."
+            return [.pineapple:2]
         case .mangoJuice:
-            return "주문성공😀 주문하신 망고쥬스 나왔습니다."
+            return [.mango:3]
         case .strawberryBananaJuice:
-            return "주문성공😀 주문하신 딸바쥬스 나왔습니다."
+            return [.strawberry:10,.banana:1]
         case .mangoKiwiJuice:
-            return "주문성공😀 주문하신 망키쥬스 나왔습니다."
+            return [.mango:2,.kiwi:1]
         }
     }
 }
